@@ -1,0 +1,11 @@
+groups:
+- name: prometheus_alert
+  rules: 
+  - alert: prometheus_cpu_status
+    expr: process_resident_cpu{en=1010} >= 80
+    for: 15s
+    labels:
+      severity: "all"
+    annotations:
+      summary: "当前值:{{ $value }} "
+      description: "Prometheus服务器CPU使用率大于 80 on {{ $labels.instance }}"

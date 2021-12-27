@@ -1,0 +1,30 @@
+groups:
+- name: prometheus_alert
+  rules:
+  {% for alert in alert_info.values()[0]  %}
+  {% if alert['name'] == 'memory_alert' %}
+  {% if alert['status'] %}
+  {{ " " }}
+  - alert: prometheus_memory_used
+    expr: process_resident_memory_bytes{en={{ alert_info.keys()[0] }}} >= {{ alert['value'] }}
+    for: 15s
+    labels: 
+      severity: "all"
+    annotations:
+      summary: "当前值:{%raw%}{{ $value }}{%endraw%}"
+      description: "Prometheus服务器内存使用率大于 {{ alert['value'] }} on {%raw%}{{ $labels.instance }}{%endraw%}"
+  {% endif %}
+  {% elif alert['name'] == 'cpu_alert' %}
+  {% if alert['status'] %}
+  {{ " " }}
+  - alert: prometheus_cpu_status
+    expr: process_resident_cpu{en={{ alert_info.keys()[0] }}} >= {{ alert['value'] }}
+    for: 15s
+    labels:
+      severity: "all"
+    annotations:
+      summary: "当前值:{%raw%}{{ $value }}{%endraw%}"
+      description: "Prometheus服务器CPU使用率大于 {{ alert['value'] }} on {%raw%}{{ $labels.instance }}{%endraw%}"
+  {% endif %}
+  {% endif %}
+  {% endfor %}

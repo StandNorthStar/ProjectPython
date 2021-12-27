@@ -1,0 +1,19 @@
+groups:
+- name: prometheus_alert
+  rules: 
+  - alert: prometheus_cpu_status
+    expr: process_resident_cpu{en=1010} >= 90
+    for: 15s
+    labels:
+      severity: "all"
+    annotations:
+      summary: "当前值:{{ $value }} "
+      description: "Prometheus服务器CPU使用率大于 90 on {{ $labels.instance }}" 
+  - alert: prometheus_memory_used
+    expr: process_resident_memory_bytes{en=1010} >= 200000000
+    for: 15s
+    labels: 
+      severity: "all"
+    annotations:
+      summary: "当前值:{{ $value }}"
+      description: "Prometheus服务器内存使用率大于 200000000 on {{ $labels.instance }}"

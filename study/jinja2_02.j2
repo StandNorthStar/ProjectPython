@@ -1,0 +1,9 @@
+
+Test1
+{% for host in hosts['hosts'] %} 
+{% if host != '' %}
+{{ host }}
+{% else %}
+"other host"
+{% endif %}
+{% endfor %}

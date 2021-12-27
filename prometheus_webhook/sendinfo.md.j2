@@ -1,0 +1,19 @@
+{% if status == "firing" %}
+[告警:{{ alerts | length }}]
+{% for alert in alerts %}
+{% for k,v in alert.annotations.items() %}
+> * {{ v }}
+{% endfor %}
+> * 开始时间:{{ alert.startsAt }}
+{% endfor %}
+
+{% elif status == "resolved" %}
+[恢复]
+{% for alert in alerts %}
+{% for k,v in alert.annotations.items() %}
+> * {{ v }}
+{% endfor %}
+> * 开始时间:{{ alert.startsAt }}
+> * 结束时间:{{ alert.endsAt }}
+{% endfor %}
+{% endif %} 
